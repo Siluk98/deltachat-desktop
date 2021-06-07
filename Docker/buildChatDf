@@ -1,0 +1,12 @@
+FROM node:latest
+
+RUN \
+	apt-get update && \
+	apt-get install -y --no-install-recommends git gcc g++ make python wget ca-certificates && \
+	mkdir /usr/local/share/ca-certificates/cacert.org && \
+	wget -P /usr/local/share/ca-certificates/cacert.org http://www.cacert.org/certs/root.crt http://www.cacert.org/certs/class3.crt && \
+	update-ca-certificates && \
+	git clone https://github.com/deltachat/deltachat-desktop.git && \
+	cd deltachat-desktop && \
+	npm install && \
+	npm run build
