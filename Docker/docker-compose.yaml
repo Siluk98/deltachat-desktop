@@ -14,3 +14,11 @@ services:
    dockerfile: testChatDf
   depends_on:
   - build-agent
+ deploy-agent:
+  container_name: deltachat-deploy
+  image: deltachat:latest
+  build:
+   context: .
+   dockerfile: deployChatDf
+  depends_on:
+  - test-agent
