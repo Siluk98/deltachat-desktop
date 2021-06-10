@@ -1,0 +1,95 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building...'
+				git url: 'https://github.com/Siluk98/deltachat-desktop.git'
+				dir('Docker')
+				{
+					sh 'docker-compose up build-agent'
+				}
+            }
+			post
+			{
+				failure
+				{
+					echo 'Build failed'
+					emailext attachLog: true,
+						body: "Status: ${currentBuild.currentResult}",
+						recipientProviders: [[$class: 'DevelopersRecipientProvider']],
+						subject: 'Build failed',
+						to: 'tindacc0001@gmail.com'
+				}
+				success
+				{
+					echo 'Build completed'
+				}
+			}
+		}
+		stage('Test') {
+			steps {
+				echo 'Testing...'
+				git url: 'https://github.com/Siluk98/deltachat-desktop.git'
+				dir('Docker')
+				{
+					sh 'docker-compose up test-agent'
+				}
+			}
+			post {
+				failure {
+					echo 'Tests failed'
+					emailext attachLog: true,
+						body: "Status: ${currentBuild.currentResult}",
+						recipientProviders: [[$class: 'DevelopersRecipientProvider']],
+						subject: 'Tests failed',
+						to: 'tindacc0001@gmail.com'
+				}
+				success {
+					echo 'Tests completed'
+					
+				}
+			}
+		}
+		stage('Deploy') {
+			steps {
+				echo 'Deploying...'
+				git url: 'https://github.com/Siluk98/deltachat-desktop.git'
+				dir('Docker')
+				{
+					sh 'docker-compose up deploy-agent'
+				}
+			}
+			post
+			{
+				failure {
+					echo 'Deployment failed'
+					emailext attachLog: true,
+						body: "Status: ${currentBuild.currentResult}",
+						subject: 'Deployment failed',
+						to: 'tindacc0001@gmail.com'
+				}
+				success {
+					echo 'Deployment completed'
+				}
+			}
+		}
+    }
+	post {
+		success {
+			echo 'Pipeline completed'
+			emailext attachLog: true,
+		    		body: "Status: ${currentBuild.currentResult}",
+		    		subject: 'Pipeline completed',
+		    		to: 'tindacc0001@gmail.com'
+		}
+		failure {
+			echo 'Pipeline failed'
+			emailext attachLog: true,
+		    		body: "Status: ${currentBuild.currentResult}",
+		    		subject: 'Pipeline failed',
+		    		to: 'tindacc0001@gmail.com'
+		}
+	}
+}
