@@ -1,0 +1,16 @@
+1. Wygenerowałem klucz SSH  korzystając z polecenia ssh-keygen. Użyłem klucza typu ed25519. Następnie uruchomiłem agenta ssh i dodałem do niego swój klucz oraz zarejestrowałem klucz na serwerze. Potem zmieniłem sposób logowanie poleceniami git remote
+2. Utworzyłem taga poleceniem git tag i spushowałem z opcją --follow-tags
+3. Przełączyłem się na brancha grupowego i z niego stworzyłem swojego brancha
+4. Utworzyłem hooka typu prepare-commit-msg, który sprwadza czy wiadomość commita zaczyna się moją sygnaturą i dodaje ją jeśli tak nie jest
+
+#!/bin/sh
+MSG_FILE=$1
+COMMIT_SOURCE=$2
+SHA1=$3
+TAG="AK306467"
+
+if ! grep -qE "$TAG" "$MSG_FILE"; then
+  sed -i.bak -e "1s/^/$TAG - /" $MSG_FILE
+fi
+
+5. Zrobiłem pull requesta, lecz na screenie pokazałem jedynie przykładowy sposób jego zrobienia.
