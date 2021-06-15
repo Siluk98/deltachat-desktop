@@ -14,3 +14,4 @@ if ! grep -qE "$TAG" "$MSG_FILE"; then
 fi
 
 5. Zrobiłem pull requesta, lecz na screenie pokazałem jedynie przykładowy sposób jego zrobienia.asdasdasdasdasd
+zxczxczxc
