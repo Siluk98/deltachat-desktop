@@ -13,4 +13,4 @@ if ! grep -qE "$TAG" "$MSG_FILE"; then
   sed -i.bak -e "1s/^/$TAG - /" $MSG_FILE
 fi
 
-5. Zrobiłem pull requesta, lecz na screenie pokazałem jedynie przykładowy sposób jego zrobienia.
+5. Zrobiłem pull requesta, lecz na screenie pokazałem jedynie przykładowy sposób jego zrobienia.asdasdasdasdasd
