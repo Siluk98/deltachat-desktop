@@ -1,10 +1,18 @@
 FROM ubuntu:latest
 ENV TZ=Europe
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
-	apt-get -y update && \
-	apt-get -y install git && \
-	apt-get -y install npm && \
-	cd ~
+USER root
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN apt-get -y install npm
+RUN apt-get -y install libnss3-dev libatk1.0-0 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libgtk-3-0
+RUN apt-get -y install xserver-xorg-video-all xserver-xorg-input-all xserver-xorg-core xinit x11-xserver-utils
+RUN	apt-get -y update
+RUN	cd ~
 
-COPY . deltachat-desktop
 WORKDIR ./deltachat-desktop
+
+RUN npm install --global electron --unsafe-perm=true --allow-root
+RUN npm update
+RUN npm start --no-sandbox
+
+EXPOSE 3000
+CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
