@@ -3,6 +3,8 @@ services:
  build-agent:
   container_name: deltachat
   image: deltachat:latest
+  volumes:
+   - deltachat:/deltachat-desktop
   build:
    context: .
    dockerfile: buildChatDf
@@ -17,8 +19,12 @@ services:
  deploy-agent:
   container_name: deltachat-deploy
   image: deltachat:latest
+  volumes:
+   - deltachat:/deltachat-desktop
   build:
    context: .
    dockerfile: deployChatDf
   depends_on:
   - test-agent
+volumes:
+ deltachat:
